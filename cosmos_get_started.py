@@ -1,5 +1,5 @@
 from azure.cosmos import exceptions, CosmosClient, PartitionKey
-import integrantes
+import members
 
 # Initialize the Cosmos client
 endpoint = 'https://sistemas-distribuidos-cosmosdb.documents.azure.com:443/'
@@ -28,17 +28,17 @@ container = database.create_container_if_not_exists(
 
 
 # Add items to the container
-integrantes_items_to_create = [integrantes.get_integrante_joaofidelis(), integrantes.get_integrante_rafaeltury(), integrantes.get_integrante_thiagoaraujo()]
+member_items_to_create = [members.get_member_joaofidelis(), members.get_member_rafaeltury(), members.get_member_thiagoaraujo()]
 
  # <create_item>
-for integrante_item in integrantes_items_to_create:
-    container.create_item(body=integrante_item)
+for member_item in member_items_to_create:
+    container.create_item(body=member_item)
 # </create_item>
 
 # Read items (key value lookups by partition key and id, aka point reads)
 # <read_item>
-for integrantes in integrantes_items_to_create:
-    item_response = container.read_item(item=integrantes['id'], partition_key=integrantes['lastName'])
+for members in member_items_to_create:
+    item_response = container.read_item(item=members['id'], partition_key=members['lastName'])
     request_charge = container.client_connection.last_response_headers['x-ms-request-charge']
     print('Read item with id {0}. Operation consumed {1} request units'.format(item_response['id'], (request_charge)))
 # </read_item>
