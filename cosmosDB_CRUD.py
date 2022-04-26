@@ -31,7 +31,6 @@ def read_item(container, doc_id):
     print('Item read by Id {0}'.format(doc_id))
     print('lastName: {0}'.format(response.get('lastName')))
     print('collegeInformation: {0}'.format(response.get('collegeInformation')))
-    # print('collegeInformation: {0}'.format(response.get('collegeInformation')))
 
 def delete_item(container, doc_id):
     print('\n1.7 Deleting Item by Id\n')
@@ -53,19 +52,11 @@ def get_newmember(nome, sobrenome, anoIngresso, curso, RA):
     }
     return newMember
 
-""" def upsert_item(container, doc_id):
-    print('\n1.6 Upserting an item\n')
-    read_item = container.read_item(item=doc_id, partition_key=doc_id)
-    read_item['subtotal'] = read_item['subtotal'] + 1
-    response = container.upsert_item(body=read_item)
-    print('Upserted Item\'s Id is {0}, new subtotal={1}'.format(response['id'], response['subtotal'])) """
-
 
 def showMenu(container, option = 1):
     SAIR = 5
 
     while(option != SAIR):
-        members_ids = returnIDS(container)
 
         print("\n1 - Listar itens do banco de dados")
         print("2 - Deletar item do banco de dados com ID")
@@ -73,6 +64,8 @@ def showMenu(container, option = 1):
         print("4 - Atualizar item no banco de dados")
         print(SAIR, "- Sair")
         option = int(input("\nEscolha uma opção: "))
+
+        members_ids = returnIDS(container)
 
         if (option == 1):
             if (members_ids):
@@ -106,7 +99,8 @@ def showMenu(container, option = 1):
                     print(idx+1, '-', member)
 
                 updateMember = int(input("Escolha uma opção: "))
-                readItem = container.read_item(item=members_ids[updateMember-1], partition_key=members_ids[updateMember-1])
+                readItem = container.read_item(item=members_ids[updateMember-1], 
+                    partition_key=members_ids[updateMember-1])
 
                 yearOfEntry = int(input("Insira o ano de ingresso: "))
                 course = str(input("Insira o curso: "))
@@ -116,8 +110,8 @@ def showMenu(container, option = 1):
                 readItem['collegeInformation']['course'] = course
                 readItem['collegeInformation']['studentId'] = studentId
     
-                response = container.replace_item(item=readItem, body=readItem)
-                # print(readItem['id'], readItem[''])
+                container.replace_item(item=readItem, body=readItem)
+
 if __name__ == '__main__':
     endpoint = 'https://sistemas-distribuidos-cosmosdb.documents.azure.com:443/'
     key = 'FLrFsEzm7N4eL8ECFpfxFEz5mcSHG6bFYpT47iEyJWbX9WmSTQAe1mSnZiO1Lm40YsX8pkYRSo0Bou91MbHxIg=='
