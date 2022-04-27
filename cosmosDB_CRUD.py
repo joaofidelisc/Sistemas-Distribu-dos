@@ -41,7 +41,7 @@ def get_newmember(nome, sobrenome, anoIngresso, curso, RA):
     'collegeInformation':{
         'yearOfEntry': anoIngresso,
         'course': curso,
-        'studentID': RA,
+        'studentId': RA,
         },
     }
     return newMember
